@@ -17,14 +17,19 @@ namespace appinsights_sql_test
             module.Initialize(config);
 
             var telemetryClient = new TelemetryClient();
-            telemetryClient.TrackTrace("Hello World!");
+            telemetryClient.TrackTrace("Start Benchmark");
 
             using(var conn = new SqlConnection("server=localhost;initial catalog=master;integrated security=SSPI"))
             {
                 conn.Open();
-                using(var cmd = new SqlCommand("select @@servername",conn))
+                for(var i = 98; i <= 102; i++)
                 {
-                    cmd.ExecuteNonQuery();
+                    var ts = new TimeSpan(0, 0, i);
+                    using (var cmd = new SqlCommand($"waitfor delay '00:{ts.Minutes:00}:{ts.Seconds:00}'",conn))
+                    {
+                        client.TrackTrace($"Running SQL query for {ts.TotalSeconds} seconds");
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
 
