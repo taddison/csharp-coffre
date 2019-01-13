@@ -4,13 +4,13 @@
   [x] Plain function app
   [x] Plain function app with no webjobs dashboard
   [x] Plain function app with no webjobs dashboard, add app insights
-  [ ] Function app with EH output, no webjobs + appinsights
+  [x] Function app with EH output, no webjobs + appinsights
 
 ## Test
   [x] Plain
   [x] Plain no webjobs
   [x] Plain appinsights
-  [ ] EH
+  [x] EH
 
 ## Notes
 - Azure Devops load test fails when trying to target default deployment - switched to HTTP.  Looks like its related to TLS 1.2 (though it was still failing with min version 1.0?)
@@ -21,3 +21,4 @@
 - Test Run 12 -> Plain
 - Test Run 13 - > No webjobs dashboard
 - Test Run 14 -> add appinsights
+- Test Run 16 - > EH
