@@ -60,10 +60,19 @@ namespace teams_webhook
             card.potentialAction[0].name = "Get Help";
             card.potentialAction[0].targets = targets;
 
+            var section = new Section() { activitySubtitle = "Badness afoot", activityTitle = "Warning!"};
+            section.facts = new Fact[3];
+            section.facts[0] = new Fact() { name = "Incident Time", value = "Recently. **very** recently."};
+            section.facts[1] = new Fact() { name = "Value of some metric", value = "11"};            
+            section.facts[2] = new Fact() { name = "Suggested action", value = "[Be upset](http://nooooooooooooooo.com/)"};
+
+            card.sections = new Section[] { section };
+
             return JsonConvert.SerializeObject(card);
         }
 
         // Not yet supported in MS teams
+        // https://microsoftteams.uservoice.com/forums/555103-public/suggestions/35793883-adaptive-cards-webhooks
         static string GetAdaptiveCard()
         {
             var card = new
@@ -103,8 +112,28 @@ namespace teams_webhook
             public string title {get;set;}
 
             [JsonProperty]
+            public Section[] sections {get;set;}
+            [JsonProperty]
             public Action[] potentialAction {get;set;}
+        }
 
+        class Section
+        {
+            [JsonProperty]
+            public string activityTitle { get; set; }
+            [JsonProperty]
+            public string activitySubtitle { get; set; }
+            
+            [JsonProperty]
+            public Fact[] facts {get;set;}
+        }
+
+        class Fact
+        {
+            [JsonProperty]
+            public string name {get; set;}
+            [JsonProperty]
+            public string value {get;set;}
         }
 
         class Action
