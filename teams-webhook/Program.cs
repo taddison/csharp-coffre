@@ -54,19 +54,26 @@ namespace teams_webhook
             var targets = new List<Dictionary<string,string>>();
             targets.Add(osTarget);
 
-            card.potentialAction = new Action[1];
-            card.potentialAction[0] = new Action();
-            card.potentialAction[0].type = "OpenUri";
-            card.potentialAction[0].name = "Get Help";
-            card.potentialAction[0].targets = targets;
+            var potentialAction = new Action()
+            {
+                type = "OpenUri",
+                name = "Get Help",
+                targets = targets
+            };
+            card.potentialAction = new List<Action>() { potentialAction };
 
-            var section = new Section() { activitySubtitle = "Badness afoot", activityTitle = "Warning!"};
-            section.facts = new Fact[3];
-            section.facts[0] = new Fact() { name = "Incident Time", value = "Recently. **very** recently."};
-            section.facts[1] = new Fact() { name = "Value of some metric", value = "11"};            
-            section.facts[2] = new Fact() { name = "Suggested action", value = "[Be upset](http://nooooooooooooooo.com/)"};
+            var section = new Section() 
+            {   activitySubtitle = "Badness afoot",
+                activityTitle = "Warning!"
+            };
+            section.facts = new List<Fact>()
+            {
+                new Fact() { name = "Incident Time", value = "Recently. **very** recently."},
+                new Fact() { name = "Suggested action", value = "[Be upset](http://nooooooooooooooo.com/)"},
+                new Fact() { name = "Value of some metric", value = "11"}
+            };
 
-            card.sections = new Section[] { section };
+            card.sections = new List<Section> { section };
 
             return JsonConvert.SerializeObject(card);
         }
@@ -110,11 +117,10 @@ namespace teams_webhook
             public string summary {get;set;}
             [JsonProperty]
             public string title {get;set;}
-
             [JsonProperty]
-            public Section[] sections {get;set;}
+            public List<Section> sections {get;set;}
             [JsonProperty]
-            public Action[] potentialAction {get;set;}
+            public List<Action> potentialAction {get;set;}
         }
 
         class Section
@@ -123,9 +129,8 @@ namespace teams_webhook
             public string activityTitle { get; set; }
             [JsonProperty]
             public string activitySubtitle { get; set; }
-            
             [JsonProperty]
-            public Fact[] facts {get;set;}
+            public List<Fact> facts {get;set;}
         }
 
         class Fact
